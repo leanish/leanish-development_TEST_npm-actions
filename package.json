@@ -13,7 +13,7 @@
     "json5": "2.2.1",
     "optimist": "0.6.1",
     "semver": "7.7.4",
-    "string-width": "4.2.3",
+    "string-width": "8.3.0",
     "strip-ansi": "4.0.0",
     "wordwrap": "0.0.3"
   }

@@ -17,5 +17,8 @@
     "string-width": "4.2.3",
     "strip-ansi": "4.0.0",
     "wordwrap": "0.0.3"
+  },
+  "devDependencies": {
+    "lint-staged": "15.2.4"
   }
 }

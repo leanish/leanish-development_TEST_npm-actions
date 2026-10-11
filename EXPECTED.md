@@ -1,9 +1,14 @@
 # Expected outcomes — npm and Actions
 
-Baseline authored 2026-10-09. REGISTRY-EVIDENCE.json records historical public metadata/integrities for the
-21-package lock. Nine glob-graph entries were added on 2026-10-10; concat-map
-uses a digest-verified cached tarball and its publish date remains VERIFY. No
-private registry URLs or invented integrities are used.
+Baseline authored 2026-10-09 and extended 2026-10-10 for supply-chain 0.3.0.
+REGISTRY-EVIDENCE.json records historical public metadata/integrities for the
+original 21-package, seven-direct lock (nine glob-graph entries were added on
+2026-10-10; concat-map uses a digest-verified cached tarball and its publish
+date remains VERIFY). The extended lock is npm-generated (npm 11.20) and adds
+lint-staged 15.2.4 with its exact micromatch 4.0.6 dependency; the original
+entries are unchanged. lint-staged 15.2.4 also brings yaml 2.4.2 (GHSA-48c2-rrv3-qjmp,
+fixed in 2.8.3): the parent must admit two copies; see "B: two obligations".
+(From 2728a63 to its revert on 2026-10-11 yaml was pre-repaired instead.) No private registry URLs or invented integrities are used.
 
 | Case | File/line | bump-it | secure-it | Gate |
 |---|---|---|---|---|
@@ -29,23 +34,22 @@ The previous 12-package baseline passed npm ci and six tests after the wordwrap
 correction. Those historical checks do not validate the expanded glob graph;
 see VALIDATION.md for checks on this revision.
 
-`VERIFY: NPM` — Run tests on selected update heads and confirm the manually
-assembled cache-derived lock stays accepted unchanged by npm 11.17+. Check all
-manifest/lock versions, registry
-integrities, signatures/provenance, current deprecations/publisher identities and
-candidate publish times. Cached dates are historical evidence, not current registry
-verification. Confirm JSON5 2.2.2 and the selected minimatch fix are aged clean targets for
-ALL advisories in the live snapshot; recheck minimist's identity blocker; do not accept a newer
-routine bump as proof secure-it chose its minimal fix. The baseline semver 7.7.4,
-wordwrap 0.0.3, optimist 0.6.1, JSON5 2.2.1 and minimist 0.0.8 are historically aged.
+`VERIFY: NPM` — Validate the npm-generated extended lock with npm ci and npm test.
+Retain the original seeded versions/copy separation, and verify the lint-staged
+publisher preflight, registry integrities, provenance and live security targets.
+Historical validation does not establish acceptance of this extended graph.
 
 ## Case 7: identity-compatible vulnerable transitive floor
 
 | Case | File/line | bump-it | secure-it | Gate / floor lifecycle |
 |---|---|---|---|---|
-| glob parent | `package.json:13`; `package-lock.json:60` (node_modules/glob) | Direct glob 4.5.3 can get routine/major candidates; major is subject to cap/defer. Transitive refresh stays in ^2.0.1 and cannot reach minimatch 3.x. | Keep glob 4.5.3 in this independent security trial; do not fix by changing the parent or declaring root minimatch. | Preserve parent range ^2.0.1, baseline minimatch 2.0.10 and real glob API test. |
+| glob parent / B fallback | `package.json`, `node_modules/glob` | Direct routine/major candidates remain live registry outcomes; do not merge them before the independent security trial. | Search for a lowest aged in-line parent admitting the minimatch security target. No eligible later glob 4.x exists, so keep 4.5.3 and retain override + security floor. The PR notes why the parent could not move. | Preserve the real ^2.0.1 edge and benign glob test; no root minimatch declaration. |
 | minimatch transitive | `package-lock.json:114` (node_modules/minimatch) | No independent direct move for minimatch. | Separate major security unit 2.0.10 -> lowest aged clean fix for the live advisory snapshot. Historical 3.1.5 passes the actual v0.2.2 identity check against cached 2.0.10 metadata. Add a persistent npm override (global or scoped to glob) plus matching .github/dependency-floors.json security entry. | Scan FAIL for GHSA-f8q6-p94x-37v3 / CVE-2022-3517 (minimatch <3.0.5). Successful fix compare removes this finding, judges every changed/added artifact and can retain inherited minimist/JSON5 findings. Require safe resolved copies, exact override paths/selectors and matching floor; npm test passes. |
 | floor retain/remove | Future override + .github/dependency-floors.json; absent initially | Do not silently raise/remove the recorded security floor. | Retain after fixing: without override, glob ^2.0.1 excludes every 3.x fix and restores vulnerable 2.x. A later parent update may permit a separate floor-removal PR ONLY after joint unlocked proof. | Installed safe minimatch alone does not justify removal. Parent bump before security trial consumes this fixture. |
+
+Under 0.3.0 the floor is justified by an unsuccessful parent search, not by
+skipping parent search. Require the run/PR note identifying glob and the
+absence of an eligible in-line version whose range admits the selected fix.
 
 [GHSA-f8q6-p94x-37v3](https://github.com/advisories/GHSA-f8q6-p94x-37v3)
 names the seeded minimatch advisory. Newer advisories may require later targets
@@ -90,8 +94,11 @@ Routine and major exact targets, advisory counts and extra security units are li
 registry outcomes, not fixed to the illustrative versions below. npm identity,
 source or provenance breaks can block an otherwise safe version.
 
-Gate: pinned to the supply-chain v0.2.2 release commit `a8c3f1010bc321ab3c45603eb5600ff9dda7ff3a` (`# v0.2.2`), as the
-other adopters are.
+Gate trials use the same supply-chain commit for inventory and comparison.
+The prerelease baseline pins carrier-first-security-fixes commit
+87b1e9e5b54657f668bf9087b81441fb5eb251cc. After v0.3.0 is released, replace
+that pin with its dereferenced release commit and full release-tag comment.
+Do not claim released v0.3.0 behavior from a v0.2.2 workflow.
 
 `VERIFY: ACTIONS` — Confirm each exact SHA/tag pair and published release date via
 GitHub (dereference annotated tags). Baseline checkout v4.1.1 is
@@ -256,5 +263,21 @@ B1 (Gradle inventory ordering), B2 (bump-it plugin graph additions/removals unde
 planned-swap proof), and B3 (secure-it sharing that proof) affect the Gradle
 fixtures. They do not change this repository's npm identity, source, advisory,
 exact computed-lock, floor or cooldown checks. Minimist's identity blocker must
-not become an accepted update just because v0.2.3 ships. Gate stays on v0.2.2;
+not become an accepted update just because v0.2.3 ships. Gate is pinned to supply-chain 87b1e9e (the 0.3.0 candidate);
 record the actual tool and gate versions independently in every trial.
+
+## B: npm parent before override
+
+| Case | File/path | bump-it | secure-it | Gate |
+|---|---|---|---|---|
+| B: parent admits the fix | package.json devDependencies.lint-staged; installed micromatch copy | Highest eligible aged safe lint-staged 15.x in routine; do not mistake that for the minimal security parent choice. Micromatch has no independent direct bump. | For GHSA-952p-6rrq-rcjv, move lint-staged 15.2.4 -> 15.2.5 and lock micromatch 4.0.6 -> 4.0.8 inside ~4.0.7. No micromatch override or floor. | Parent and child land together; target advisory disappears. All induced changes pass normal advisory, age and identity checks. |
+| B: identity acceptance | Public registry metadata for both parent versions and the computed head | Normal identity policy. | Positive-case acceptance requires the actual gate identity checks to pass, without exceptions. | Preflight 2026-10-10: 15.2.4 and 15.2.5 both published by okonet, neither with provenance; 15.2.4 pins micromatch 4.0.6, 15.2.5 requires ~4.0.7. A failure must remain a blocker/fallback, not be called a successful parent move. |
+| B: two obligations | lint-staged 15.2.4 brings micromatch 4.0.6 and yaml 2.4.2 (GHSA-48c2-rrv3-qjmp, fixed in 2.8.3) | Same. | No lint-staged version past the wait admits both: 15.2.5–15.3.x exclude yaml 2.8.3, and those admitting both fail the identity check (published from lint-staged/lint-staged, a repository 15.2.4 doesn't declare). Since 0.3.0 takes the parent version admitting the most copies (the lowest that tie): move lint-staged 15.2.4 -> 15.2.5 and lock micromatch 4.0.8; yaml keeps an override 2.8.3 + floor, with a note that lint-staged 15.2.5 doesn't admit it. Before that rule (candidate c31c395), both kept overrides; that run's notes read "no lint-staged version admitting micromatch@4.0.8, yaml@2.8.3 is free of new advisories, keeps its publisher, and moves without an override itself". | Parent, lock and override verified together; both advisories disappear. |
+| B: no eligible parent | Existing glob 4.5.3 -> minimatch 2.0.10 graph | Preserve the independent security seed. | Keep persistent minimatch override + matching security floor, with a parent-search failure note. | Fix the live rule-selected target; retain the floor until joint unlocked removal proof succeeds. |
+
+The named micromatch case assumes the recorded live snapshot selects 4.0.8.
+New advisories or additional obligations on the same parent can change the
+minimum admissible parent. Preserve complete candidate/plan/notes evidence.
+
+Micromatch 4.0.8 changes its picomatch dependency line. Judge the actual selected
+picomatch copy too; do not preserve a vulnerable 2.3.1 merely to minimize the diff.

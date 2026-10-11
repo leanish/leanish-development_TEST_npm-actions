@@ -19,10 +19,9 @@
     "wordwrap": "0.0.3"
   },
   "devDependencies": {
-    "lint-staged": "15.2.4"
+    "lint-staged": "15.2.5"
   },
   "overrides": {
-    "micromatch": "4.0.8",
     "yaml": "2.8.3"
   }
 }

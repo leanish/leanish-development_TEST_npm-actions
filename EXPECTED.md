@@ -263,7 +263,7 @@ B1 (Gradle inventory ordering), B2 (bump-it plugin graph additions/removals unde
 planned-swap proof), and B3 (secure-it sharing that proof) affect the Gradle
 fixtures. They do not change this repository's npm identity, source, advisory,
 exact computed-lock, floor or cooldown checks. Minimist's identity blocker must
-not become an accepted update just because v0.2.3 ships. Gate stays on v0.2.2;
+not become an accepted update just because v0.2.3 ships. Gate is pinned to supply-chain 87b1e9e (the 0.3.0 candidate);
 record the actual tool and gate versions independently in every trial.
 
 ## B: npm parent before override

@@ -95,9 +95,11 @@ registry outcomes, not fixed to the illustrative versions below. npm identity,
 source or provenance breaks can block an otherwise safe version.
 
 Gate trials use the same supply-chain commit for inventory and comparison.
-The gate is pinned to supply-chain v0.3.0
-(20711928aa3074093cdcc8080767c56b1223ae01, 2026-10-11). Earlier trials used the
-candidate commit 87b1e9e, unreachable since its branch was merged.
+The gate is pinned to supply-chain v0.4.0
+(1c236638041cc479ac067b2a4b6143f0e6c2bace, 2026-10-11), which scans only the default branch
+daily and no longer rescans open PRs. Earlier trials used v0.3.0
+(20711928aa3074093cdcc8080767c56b1223ae01) and the candidate commit 87b1e9e,
+unreachable since its branch was merged.
 
 `VERIFY: ACTIONS` — Confirm each exact SHA/tag pair and published release date via
 GitHub (dereference annotated tags). Baseline checkout v4.1.1 is
@@ -262,7 +264,7 @@ B1 (Gradle inventory ordering), B2 (bump-it plugin graph additions/removals unde
 planned-swap proof), and B3 (secure-it sharing that proof) affect the Gradle
 fixtures. They do not change this repository's npm identity, source, advisory,
 exact computed-lock, floor or cooldown checks. Minimist's identity blocker must
-not become an accepted update just because v0.2.3 ships. Gate is pinned to supply-chain v0.3.0;
+not become an accepted update just because v0.2.3 ships. Gate is pinned to supply-chain v0.4.0;
 record the actual tool and gate versions independently in every trial.
 
 ## B: npm parent before override

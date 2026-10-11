@@ -18,7 +18,11 @@
     "strip-ansi": "4.0.0",
     "wordwrap": "0.0.3"
   },
+  "devDependencies": {
+    "lint-staged": "15.2.4"
+  },
   "overrides": {
+    "yaml": "2.8.3",
     "minimatch": "3.1.4"
   }
 }

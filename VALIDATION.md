@@ -15,7 +15,7 @@ Each record below states how far its evidence goes:
 | Tool branches | fetched 2026-10-12 | real tool run verified (branch contents only) | not recorded | see below |
 
 The package counts in these records describe the graph at each date. The
-lock before the 2026-10-12 seeds has 82 installed packages and eight direct dependencies.
+2026-10-12 seed has 189 installed packages and twelve direct dependencies.
 
 ## Local validation — 2026-10-09
 
@@ -129,3 +129,23 @@ Seeded alone on the 82-package lock. Probes on copies: glob 13.0.6 alone fails
 `test/glob-callback.test.cjs` with `TypeError: glob is not a function`; with
 `const { glob } = require('glob')` and an awaited `glob(...)` it passes. Tool-run outcomes
 go below when recorded.
+
+### Case 16 tool run — 2026-10-12 (real tool run verified; supply-chain v0.4.2, seed `4d1c1fa`)
+
+bump-it `review` (with `agent-fixtures.yaml`), three ticks about eight minutes apart:
+1. [#12](https://github.com/leanish/supply-chain_TEST_npm-actions/pull/12) `rebased` onto `4d1c1fa`
+   (clean merge); `npm test` then failed on head `f5a304a`.
+2. `adapted` (attempt 2 of 2): the agent made `test/glob-callback.test.cjs` work with both
+   glob 4's callable callback API and glob 13's named `glob.glob` promise, keeping the
+   asserted file list; tests green on head `72ac490`. ~USD 0.10.
+3. `marked-ready` (the rebase had turned it back into a draft).
+
+## Cases 13–15 seed — 2026-10-12 (seed/probe verified)
+
+`npm install --package-lock-only --ignore-scripts --min-release-age=7` with npm 11.20
+produced the seed lock (189 installed packages; `@types/node` 24.1.0, `mimic-fn` 3.1.0,
+`stylelint` 16.0.2, `stylelint-order` 6.0.4). `npm ci` and `npm test` pass (10 tests).
+`mimic-fn` 4.0.0 passes unchanged (dynamic import). Registry facts checked the same day:
+`mimic-fn` 5.0.0 deprecated ("Renamed to mimic-function"); `stylelint-order` 8.1.2 (young)
+and 8.1.1 peer `stylelint` `^16.18.0 || ^17.0.0`; no GitHub advisory for `stylelint`
+16.0.2. Tool-run outcomes go below when recorded.

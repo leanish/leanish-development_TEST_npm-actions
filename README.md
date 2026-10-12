@@ -3,7 +3,8 @@
 Synthetic fixture covering direct updates, JSON5 security, optimist/minimist
 identity blocking, glob/minimatch override floors, lint-staged parent remediation
 with two obligations (micromatch and yaml), pinned Actions, two installed
-strip-ansi versions, and case 16: a major that needs a test adapted.
+strip-ansi versions, and cases 13–16: the `@types/node` cap, a deprecated major
+target, a required peer companion and a major that needs a test adapted.
 
 ```sh
 npm ci --ignore-scripts --no-audit --no-fund

@@ -15,7 +15,7 @@ Each record below states how far its evidence goes:
 | Tool branches | fetched 2026-10-12 | real tool run verified (branch contents only) | not recorded | see below |
 
 The package counts in these records describe the graph at each date. The
-2026-10-12 seed has 189 installed packages and twelve direct dependencies.
+2026-10-12 seed has 196 installed packages and twelve direct dependencies.
 
 ## Local validation — 2026-10-09
 
@@ -143,9 +143,27 @@ bump-it `review` (with `agent-fixtures.yaml`), three ticks about eight minutes a
 ## Cases 13–15 seed — 2026-10-12 (seed/probe verified)
 
 `npm install --package-lock-only --ignore-scripts --min-release-age=7` with npm 11.20
-produced the seed lock (189 installed packages; `@types/node` 24.1.0, `mimic-fn` 3.1.0,
-`stylelint` 16.0.2, `stylelint-order` 6.0.4). `npm ci` and `npm test` pass (10 tests).
+produced the seed lock (`@types/node` 24.1.0, `mimic-fn` 3.1.0, `stylelint-order` 6.0.4,
+first with `stylelint` 16.0.2 and 189 installed packages, then re-seeded with `stylelint`
+16.17.0 and 196 packages; see the first run below). `npm ci` and `npm test` pass (10 tests).
 `mimic-fn` 4.0.0 passes unchanged (dynamic import). Registry facts checked the same day:
 `mimic-fn` 5.0.0 deprecated ("Renamed to mimic-function"); `stylelint-order` 8.1.2 (young)
 and 8.1.1 peer `stylelint` `^16.18.0 || ^17.0.0`; no GitHub advisory for `stylelint`
-16.0.2. Tool-run outcomes go below when recorded.
+16.0.2 or 16.17.0. Tool-run outcomes go below when recorded.
+
+### Cases 13–15 first tool run — 2026-10-12 (real tool run verified; v0.4.2, seed `8c4111a`, stylelint 16.0.2)
+
+bump-it `run` (with `agent-fixtures.yaml`), ~USD 0.64:
+- **Case 13:** every unit's notes say "@types/node targets are capped at the lowest supported
+  Node major (24; .github/workflows/ci.yml: node-version, package.json: engines.node)"; no
+  `@types/node` major unit was planned.
+- **Case 14:** `mimic-fn-major` published [#15](https://github.com/leanish/supply-chain_TEST_npm-actions/pull/15),
+  "update mimic-fn to 4.0.0", not the newer deprecated 5.0.0.
+- **Case 15:** `stylelint-major` (17.16.0) `blocked`: "stylelint-order@6.0.4 requires peer
+  stylelint ^14.0.0 || ^15.0.0 || ^16.0.1, not 17.16.0". `stylelint-order-major` and the
+  routine `failed` verification: moving stylelint from 16.0.2 to 16.18+ also moved
+  `file-entry-cache` 7.0.2 -> 11.1.5 and `flat-cache` 3.2.0 -> 6.1.23, built from
+  `jaredwray/cacheable`, a repository the replaced versions don't declare (the npm
+  publisher-identity check, working as intended). Re-seeded `stylelint` at 16.17.0, whose
+  `file-entry-cache` 10.x and `flat-cache` 6.x already come from that repository, so the
+  companion move no longer changes publisher identity.

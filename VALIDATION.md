@@ -1,4 +1,23 @@
-# Local validation — 2026-10-09
+# Validation
+
+Each record below states how far its evidence goes:
+
+- **seed/probe verified**: the seed, or a local probe of it, was checked; no tool ran.
+- **real tool run verified**: a real secure-it or bump-it run produced it.
+
+| Record | Date | Evidence state | Tool version | PRs / heads |
+|---|---|---|---|---|
+| Local validation | 2026-10-09 | seed/probe verified (offline dry runs; npm test not run) | not recorded | none |
+| Case 10 addition | 2026-10-09 | seed/probe verified (synthetic heads; API tests not run) | not recorded | none |
+| Claude networked review and wordwrap correction | 2026-10-09 | seed/probe verified (npm ci and six tests passed) | none | none |
+| Fixture fixes 1–5 | 2026-10-10 | seed/probe verified (identity check with v0.2.2 code; npm test not run) | v0.2.2 (identity check only) | none |
+| Tool runs recorded in EXPECTED.md | 2026-10-10 to 2026-10-11 | real tool run verified | see below | see below |
+| Tool branches | fetched 2026-10-12 | real tool run verified (branch contents only) | not recorded | see below |
+
+The package counts in these records describe the graph at each date. The
+lock before the 2026-10-12 seeds has 82 installed packages and eight direct dependencies.
+
+## Local validation — 2026-10-09
 
 - YAML parsed with the gate checkout's yaml library; workflow events verified.
 - .github/supply-chain.json accepted by the gate's actual readSettings/parser.
@@ -74,3 +93,39 @@ The earlier five-package validation above describes the fixture before case 10.
 - Scoped npm test discovery to test/*.test.cjs so ignored local probe copies cannot
   become extra test inputs during subsequent root checks. Networked installs and
   API probes remain pending; no updated test pass is claimed.
+
+## Tool runs recorded in EXPECTED.md — 2026-10-10 to 2026-10-11
+
+These real runs are recorded in EXPECTED.md, where they set expectations:
+
+- **Run 1**, the first run, before 949ef56 on 2026-10-10 (case 7, "minimist identity
+  blocker"): secure-it blocked minimist 0.0.8 -> 0.2.4 on publisher identity. Tool
+  version and PR not recorded.
+- **Two-obligation run, 2026-10-11** ("B: two obligations"): candidate supply-chain
+  c31c395 on seed a6602c5 kept micromatch and yaml overrides, before the 0.3.0
+  parent rule. The run's note text is quoted there. Its PR, #6 in the record of
+  76f7430, was re-planned on later seeds.
+
+## Tool branches — fetched 2026-10-12
+
+Real tool branches, read from this clone's remote-tracking refs. Only their
+contents are evidence here: PR state, tool versions and CI results aren't recorded
+(the PR number below comes from the 2026-10-12 fixture plan).
+
+- `secure-it/2026-10-10-security` (head 621843f): json5 2.2.1 -> 2.2.2; lint-staged
+  15.2.4 -> 15.2.5 with micromatch locked at 4.0.8; yaml override 2.8.3 plus its
+  security floor. This matches case 7 "vulnerable direct" and "B: two obligations".
+- `secure-it/2026-10-10-minimatch-major` (head ce394c8): minimatch override 3.1.4 plus
+  a security floor for five advisories, including GHSA-f8q6-p94x-37v3; glob stays
+  4.5.3. This matches "B: no eligible parent". The target is 3.1.4, not the cached
+  3.1.5 example.
+- `bump-it/2026-10-10-glob-major` (#12, head 2695ddf): glob 4.5.3 -> 13.0.6.
+- Other tool branches: `bump-it/2026-10-10-routine` and the checkout, setup-node,
+  string-width, strip-ansi and wordwrap major branches.
+
+## Case 16 seed — 2026-10-12 (seed/probe verified)
+
+Seeded alone on the 82-package lock. Probes on copies: glob 13.0.6 alone fails
+`test/glob-callback.test.cjs` with `TypeError: glob is not a function`; with
+`const { glob } = require('glob')` and an awaited `glob(...)` it passes. Tool-run outcomes
+go below when recorded.

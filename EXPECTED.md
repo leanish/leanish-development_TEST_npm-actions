@@ -12,10 +12,10 @@ fixed in 2.8.3): the parent must admit two copies; see "B: two obligations".
 
 | Case | File/line | bump-it | secure-it | Gate |
 |---|---|---|---|---|
-| 7: minor-behind direct | `package.json:16` and `package-lock.json:152` | 7.7.4 -> highest aged safe 7.x in routine; cached 7.8.5 is an aged example. Newer eligible major, if any, is separate. | No named baseline advisory expected; live snapshot decides. | Exact computed manifest/lock target, publisher identity and provenance verified; aged/safe comparison/cooldown PASS. |
-| 7: major-behind direct | `package.json:19` and `package-lock.json:211` | 0.0.3 -> historical 1.0.0 (or highest newer eligible line) in a separate major PR. Preserve optimist's independently required 0.0.x copy. | No named baseline advisory expected. | Benign wrapping test PASS across lines; new nested copies judged normally. |
-| 7: vulnerable direct | `package.json:14` and `package-lock.json:102` | Highest eligible aged safe 2.x in routine; cached 2.2.3 is an example. | Non-major security PR to lowest aged fixing version, historically 2.2.2. Change direct declaration + computed lock; no security floor required. | Baseline scan FAIL for CVE-2022-46175; fix comparison marks advisory fixed. May PASS with inherited minimist findings. |
-| 7: minimist identity blocker | `package.json:15` (optimist parent), `package-lock.json` minimist/optimist entries | Refresh remains within ~0.0.1; cannot reach safe 0.2.4. No invented minimist direct declaration. | Run 1 blocked 0.0.8 -> 0.2.4 on publisher identity: ljharb had no publisher history through 0.0.8. Retain as an expected policy blocker, not the successful floor case. No automatic exception. | Baseline findings remain. If a separately reviewed identity exception ever permits a fix, require lasting override + matching security floor and test every installed copy. |
+| 7: minor-behind direct | `package.json` `dependencies.semver` and `package-lock.json` `node_modules/semver` | 7.7.4 -> highest aged safe 7.x in routine; cached 7.8.5 is an aged example. Newer eligible major, if any, is separate. | No named baseline advisory expected; live snapshot decides. | Exact computed manifest/lock target, publisher identity and provenance verified; aged/safe comparison/cooldown PASS. |
+| 7: major-behind direct | `package.json` `dependencies.wordwrap` and `package-lock.json` `node_modules/wordwrap` | 0.0.3 -> historical 1.0.0 (or highest newer eligible line) in a separate major PR. Preserve optimist's independently required 0.0.x copy. | No named baseline advisory expected. | Benign wrapping test PASS across lines; new nested copies judged normally. |
+| 7: vulnerable direct | `package.json` `dependencies.json5` and `package-lock.json` `node_modules/json5` | Highest eligible aged safe 2.x in routine; cached 2.2.3 is an example. | Non-major security PR to lowest aged fixing version, historically 2.2.2. Change direct declaration + computed lock; no security floor required. | Baseline scan FAIL for CVE-2022-46175; fix comparison marks advisory fixed. May PASS with inherited minimist findings. |
+| 7: minimist identity blocker | `package.json` `dependencies.optimist` (parent), `package-lock.json` minimist/optimist entries | Refresh remains within ~0.0.1; cannot reach safe 0.2.4. No invented minimist direct declaration. | Run 1 blocked 0.0.8 -> 0.2.4 on publisher identity: ljharb had no publisher history through 0.0.8. Retain as an expected policy blocker, not the successful floor case. No automatic exception. | Baseline findings remain. If a separately reviewed identity exception ever permits a fix, require lasting override + matching security floor and test every installed copy. |
 
 The successful transitive floor case is glob/minimatch below. Keep minimist as
 an independent identity-policy blocker. JSON5 and minimatch fixes can pass compare
@@ -44,7 +44,7 @@ Historical validation does not establish acceptance of this extended graph.
 | Case | File/line | bump-it | secure-it | Gate / floor lifecycle |
 |---|---|---|---|---|
 | glob parent / B fallback | `package.json`, `node_modules/glob` | Direct routine/major candidates remain live registry outcomes; do not merge them before the independent security trial. | Search for a lowest aged in-line parent admitting the minimatch security target. No eligible later glob 4.x exists, so keep 4.5.3 and retain override + security floor. The PR notes why the parent could not move. | Preserve the real ^2.0.1 edge and benign glob test; no root minimatch declaration. |
-| minimatch transitive | `package-lock.json:114` (node_modules/minimatch) | No independent direct move for minimatch. | Separate major security unit 2.0.10 -> lowest aged clean fix for the live advisory snapshot. Historical 3.1.5 passes the actual v0.2.2 identity check against cached 2.0.10 metadata. Add a persistent npm override (global or scoped to glob) plus matching .github/dependency-floors.json security entry. | Scan FAIL for GHSA-f8q6-p94x-37v3 / CVE-2022-3517 (minimatch <3.0.5). Successful fix compare removes this finding, judges every changed/added artifact and can retain inherited minimist/JSON5 findings. Require safe resolved copies, exact override paths/selectors and matching floor; npm test passes. |
+| minimatch transitive | `package-lock.json` `node_modules/minimatch` | No independent direct move for minimatch. | Separate major security unit 2.0.10 -> lowest aged clean fix for the live advisory snapshot. Historical 3.1.5 passes the actual v0.2.2 identity check against cached 2.0.10 metadata. Add a persistent npm override (global or scoped to glob) plus matching .github/dependency-floors.json security entry. | Scan FAIL for GHSA-f8q6-p94x-37v3 / CVE-2022-3517 (minimatch <3.0.5). Successful fix compare removes this finding, judges every changed/added artifact and can retain inherited minimist/JSON5 findings. Require safe resolved copies, exact override paths/selectors and matching floor; npm test passes. |
 | floor retain/remove | Future override + .github/dependency-floors.json; absent initially | Do not silently raise/remove the recorded security floor. | Retain after fixing: without override, glob ^2.0.1 excludes every 3.x fix and restores vulnerable 2.x. A later parent update may permit a separate floor-removal PR ONLY after joint unlocked proof. | Installed safe minimatch alone does not justify removal. Parent bump before security trial consumes this fixture. |
 
 Under 0.3.0 the floor is justified by an unsuccessful parent search, not by
@@ -82,7 +82,7 @@ rather than inventing a date.
 
 | Case | File/line | bump-it | secure-it | Gate |
 |---|---|---|---|---|
-| Gate adoption | `.github/workflows/supply-chain.yml:22` | Own Action update may join routine/major according to release line; repin before trials. | Only if an advisory has a selected fix. | Daily scan, PR compare, open-PR rescan; require supply-chain and cooldown after repin. |
+| Gate adoption | `.github/workflows/supply-chain.yml:15` | Own Action update may join routine/major according to release line; repin before trials. | Only if an advisory has a selected fix. | PR compare; default-branch scan on push to main and manual dispatch. No schedule (removed 2026-10-12) and no open-PR rescan (removed in gate 0.4.0). Require supply-chain and cooldown. |
 | 8: checkout pin | `.github/workflows/ci.yml:16` | Routine: highest eligible v4 release and matching commit/comment; separate major for highest eligible newer line. | No fixed security expectation; live advisories decide. | Changed SHA must match its full release tag comment and aged release; otherwise FAIL. |
 | 8: Node setup pin | `.github/workflows/ci.yml:19` | Routine v4 refresh and separate newer-major PR when eligible; preserve Node 24 input. | Live advisories decide. | Same SHA/tag/age checks. |
 
@@ -96,8 +96,10 @@ source or provenance breaks can block an otherwise safe version.
 
 Gate trials use the same supply-chain commit for inventory and comparison.
 The gate is pinned to supply-chain v0.4.0
-(1c236638041cc479ac067b2a4b6143f0e6c2bace, 2026-10-11), which scans only the default branch
-daily and no longer rescans open PRs. Earlier trials used v0.3.0
+(1c236638041cc479ac067b2a4b6143f0e6c2bace, 2026-10-11). It runs on pull requests,
+pushes to main and manual dispatch. It has no schedule (removed 2026-10-12) and,
+since v0.4.0, no open-PR rescan. The tools are at v0.4.2; tool-only releases don't
+need a gate repin. Earlier trials used v0.3.0
 (20711928aa3074093cdcc8080767c56b1223ae01) and the candidate commit 87b1e9e,
 unreachable since its branch was merged.
 
@@ -114,9 +116,9 @@ times. A moved tag, missing release or new advisory changes the expected candida
 
 | Variant | File/line | bump-it | secure-it | Gate / verification |
 |---|---|---|---|---|
-| A baseline | `package.json:17` and `package-lock.json:164` | A=string-width 4.2.3 is the historical latest 4.x; newer eligible major gets its own PR. Aged 5.1.2 is an illustrative focused probe; highest eligible live target may be 8.x or newer. | Actual advisories decide; no new intentional vulnerable baseline here. | A 4.2.3 requires B=strip-ansi ^6.0.1. Gate scans that real installed graph. |
-| Root B baseline | `package.json:18` and `package-lock.json:199` | Plan direct B from its exact root declaration/installed copy 4.0.0, not A's 6.0.1. Historical v4 has no later patch; a newer eligible major has its own PR. | Judge each installed copy independently. | Root B 4.0.0 is actually installed/scanned; unlike Gradle it has not been overridden away. Its ordinary declaration remains effective for root imports. |
-| Nested B baseline | `package-lock.json:187` | This copy is transitive, not another root direct move. Routine transitive refresh must stay inside A's ^6.0.1 range. | An advisory on this copy may require a transitive fix; no floor/override is seeded. | B 6.0.1 is nested under A because root B 4.0.0 cannot satisfy A. Both B versions/locations must appear in the inventory. |
+| A baseline | `package.json` `dependencies.string-width` and `package-lock.json` `node_modules/string-width` | A=string-width 4.2.3 is the historical latest 4.x; newer eligible major gets its own PR. Aged 5.1.2 is an illustrative focused probe; highest eligible live target may be 8.x or newer. | Actual advisories decide; no new intentional vulnerable baseline here. | A 4.2.3 requires B=strip-ansi ^6.0.1. Gate scans that real installed graph. |
+| Root B baseline | `package.json` `dependencies.strip-ansi` and `package-lock.json` `node_modules/strip-ansi` | Plan direct B from its exact root declaration/installed copy 4.0.0, not A's 6.0.1. Historical v4 has no later patch; a newer eligible major has its own PR. | Judge each installed copy independently. | Root B 4.0.0 is actually installed/scanned; unlike Gradle it has not been overridden away. Its ordinary declaration remains effective for root imports. |
+| Nested B baseline | `package-lock.json` `node_modules/string-width/node_modules/strip-ansi` | This copy is transitive, not another root direct move. Routine transitive refresh must stay inside A's ^6.0.1 range. | An advisory on this copy may require a transitive fix; no floor/override is seeded. | B 6.0.1 is nested under A because root B 4.0.0 cannot satisfy A. Both B versions/locations must appear in the inventory. |
 | A-only update | Same A line, retaining root B 4.0.0 | A's major PR can raise nested B to >=7.0.1; 5.1.2 -> strip-ansi ^7.0.1 is a cache-confirmed example. Root B dependency fields/installed version remain unchanged. | Each changed transitive faces ordinary security checks. | Computed lock can replace nested B 6.0.1 with an eligible 7.x without rejecting an unplanned DIRECT B change: only the nested copy changed. Gate judges its actual age, source, identity/provenance and advisories. |
 
 Expected initial graph:
@@ -129,9 +131,11 @@ Expected initial graph:
 - A also installs emoji-regex 8.0.0 and is-fullwidth-code-point 3.0.0.
 
 No override or direct declaration for the nested copy is added. Existing JSON5,
-optimist/minimist and wordwrap cases remain unchanged. Total initial lock inventory:
-**21 installed packages, seven direct dependencies**, with two distinct strip-ansi
-versions. REGISTRY-EVIDENCE.json records each added location, cached publish date
+optimist/minimist and wordwrap cases remain unchanged. The original 2026-10-09 lock
+had 12 installed packages and six direct dependencies; glob (2026-10-10) brought it to
+21 and seven; after lint-staged it has **82 installed packages and eight direct
+dependencies** and more strip-ansi copies;
+case 10 concerns only the root copy and the copy under string-width. REGISTRY-EVIDENCE.json records each added location, cached publish date
 and actual registry integrity. All confirmed baseline publish dates are older than
 seven days (concat-map publish date remains VERIFY); current registry/advisory verification is still required.
 
@@ -146,7 +150,7 @@ resolution handling itself rejected the transitive change.
 
 `VERIFY: DECLARED-LOWER-NPM` — Run npm ci and tests with npm >=11.17; confirm the
 cache-derived nested lock is installed unchanged, root/nested module paths and
-21-package/seven-direct inventory. Recheck registry integrity, release times,
+82-package/eight-direct inventory. Recheck registry integrity, release times,
 deprecations, identities and advisory coverage for string-width 4.2.3, strip-ansi
 4.0.0/6.0.1, ansi-regex 3.0.1/5.0.1, emoji-regex 8.0.0 and
 is-fullwidth-code-point 3.0.0. Confirm actual B-major candidate originates at
@@ -156,7 +160,7 @@ illustrations, not a claim about the current highest eligible targets.
 
 ## Case 10 runnable npm probes
 
-The weekly A and B major units are normally independent, but may be deferred by
+The A and B major units are normally independent, but may be deferred by
 the cap. These local resolver/API probes also isolate them without a Git checkout
 operation. Run from this repository root with Node 24+ and npm 11.17+. They use
 aged illustrative versions, not the highest-version planner rule:
@@ -203,7 +207,7 @@ strip-ansi-copies.txt and test.log:
 
 These manual npm installs prove resolver/API behavior only; they are NOT tool
 computed plans or successful full gate verification. For automation acceptance,
-retain the weekly A-only and B-only major unit plans/diffs/inventories and their
+retain the real runs' A-only and B-only major unit plans/diffs/inventories and their
 actual verify/compare/cooldown/CI results. Check the recorded A plan leaves root
 B's dependency fields and installed version unchanged, and its changed nested B
 is judged normally; check the B plan originates at root 4.0.0. Inspect deferred
@@ -227,12 +231,13 @@ Run secure-it and bump-it independently against the same seeded main revision;
 capture evidence before merging either tool's PRs. Do not merge parent updates
 before testing transitive security fixes. Preserve the seed revision externally
 for repeat trials; after merges, do not expect the same candidates/findings.
-Unchanged weeks may review already-open PRs rather than create new ones.
+Later runs on an unchanged main may review already-open PRs rather than create new ones.
 
 bump-it's default maximum is **three new major PRs per run**, in addition to the
 routine unit. An eligible major can be deferred behind higher-priority packages,
-including Actions and the new glob direct dependency. An absent wordwrap,
-annotations, setup-java or other major PR is not a bug solely because it is absent.
+including Actions and the glob direct dependency. An absent wordwrap,
+string-width, strip-ansi, checkout, setup-node or other major PR is not a bug
+solely because it is absent.
 Check the deployed limit and each unit's status/priority; distinguish deferred,
 already-open, held, failed, no eligible candidate and notes-only dependencies.
 Capture later runs (or a deliberately configured larger limit) to exercise every
@@ -255,17 +260,19 @@ acceptance. Judge every changed resolved artifact for advisories, age and identi
 Missing registry data/inventory coverage is incomplete, never a clean pass.
 
 `VERIFY: RUN-EVIDENCE` — Confirm the deployed maxNewMajorsPerRun value and retain
-all fields and failed-unit artifacts above in the next weekly report. Reconcile
+all fields and failed-unit artifacts above in the next candidate-pass report. Reconcile
 all cases against units, not only the published PR list.
 
 ## Tool version boundary
 
-B1 (Gradle inventory ordering), B2 (bump-it plugin graph additions/removals under
-planned-swap proof), and B3 (secure-it sharing that proof) affect the Gradle
-fixtures. They do not change this repository's npm identity, source, advisory,
-exact computed-lock, floor or cooldown checks. Minimist's identity blocker must
-not become an accepted update just because v0.2.3 ships. Gate is pinned to supply-chain v0.4.0;
-record the actual tool and gate versions independently in every trial.
+Gradle verification (the plan-applied Gradle reference, since 0.3.0) affects only
+the Gradle fixtures. It doesn't change this repository's npm identity, source,
+advisory, exact computed-lock, floor or cooldown checks. Minimist's identity blocker
+must not become an accepted update just because a new tool version ships. The gate
+is pinned to supply-chain v0.4.0 and the tools are at v0.4.2; record the actual tool
+and gate versions independently in every trial. (Earlier text here described the
+0.2.x planned-swap proof and a v0.2.3 boundary; 0.3.0 replaced that proof, and v0.2.3
+was never released.)
 
 ## B: npm parent before override
 
@@ -282,3 +289,12 @@ minimum admissible parent. Preserve complete candidate/plan/notes evidence.
 
 Micromatch 4.0.8 changes its picomatch dependency line. Judge the actual selected
 picomatch copy too; do not preserve a vulnerable 2.3.1 merely to minimize the diff.
+
+## Case 16: a major that needs a test adapted (seeded 2026-10-12)
+
+Probe evidence in [VALIDATION.md](VALIDATION.md). Needs the Build (`npm test`) check;
+the gate doesn't run tests.
+
+| Case | File | bump-it | secure-it | Gate |
+|---|---|---|---|---|
+| 16: major needs a test adapted | `test/glob-callback.test.cjs` calls glob 4's callable callback API | Open #12 (glob 4.5.3 -> 13.0.6, `adaptations=1` of 2 before this seed) merges the new base cleanly, then fails `npm test` (`TypeError: glob is not a function`); the next review adapts it (e.g. `const { glob } = require('glob')` and awaiting the promise) keeping the asserted file list. #12 is already ready (not a draft), so a green review reports `already-ready`. Expected sequence: `rebased` → red CI → `adapted` → green → `already-ready`. Seeded alone, before cases 13–15: their lockfile changes would make #12's base merge conflict, and a conflicted rebase reapplies the plan with the agent in `apply`, which could fix the test before CI ever fails. With one attempt left, a failed attempt means the next review closes #12. | No advisory expected. | Build must be green; inventory/compare don't run tests. |

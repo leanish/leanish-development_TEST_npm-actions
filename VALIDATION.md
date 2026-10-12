@@ -13,6 +13,8 @@ Each record below states how far its evidence goes:
 | Fixture fixes 1–5 | 2026-10-10 | seed/probe verified (identity check with v0.2.2 code; npm test not run) | v0.2.2 (identity check only) | none |
 | Tool runs recorded in EXPECTED.md | 2026-10-10 to 2026-10-11 | real tool run verified | see below | see below |
 | Tool branches | fetched 2026-10-12 | real tool run verified (branch contents only) | not recorded | see below |
+| Case 16 seed and tool run | 2026-10-12 | seed/probe verified, then real tool run verified | v0.4.2 | seed 4d1c1fa; #12 (72ac490) |
+| Cases 13–15 seed and tool runs | 2026-10-12 | seed/probe verified, then real tool run verified | v0.4.2 | seeds 8c4111a, 4a86c6b; #15, #16, #7 |
 
 The package counts in these records describe the graph at each date. The
 2026-10-12 seed has 196 installed packages and twelve direct dependencies.

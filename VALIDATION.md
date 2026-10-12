@@ -167,3 +167,15 @@ bump-it `run` (with `agent-fixtures.yaml`), ~USD 0.64:
   publisher-identity check, working as intended). Re-seeded `stylelint` at 16.17.0, whose
   `file-entry-cache` 10.x and `flat-cache` 6.x already come from that repository, so the
   companion move no longer changes publisher identity.
+
+### Cases 13–15 second tool run — 2026-10-12 (real tool run verified; v0.4.2, seed `4a86c6b`, stylelint 16.17.0)
+
+bump-it `run` (with `agent-fixtures.yaml`), ~USD 0.51:
+- **Case 15:** `stylelint-order-major` published [#16](https://github.com/leanish/supply-chain_TEST_npm-actions/pull/16),
+  "update stylelint-order to 8.1.1 with stylelint 16.18.0": the plugin's major (8.1.1, the
+  highest aged 8.x) carries `stylelint` 16.17.0 -> 16.18.0, the lowest version its peer
+  `^16.18.0 || ^17.0.0` accepts, in the same PR. `stylelint-major` (17.16.0) stayed `blocked`
+  for the same peer reason as the first run.
+- The routine passed again (updated #7); #15 (mimic-fn 4.0.0) and the cap note unchanged.
+- Unrelated: one push to `bump-it/2026-10-10-string-width-major` was rejected by GitHub
+  (`remote: fatal error in commit_refs`, a server-side error); the next run retries it.

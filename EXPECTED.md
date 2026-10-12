@@ -133,7 +133,7 @@ Expected initial graph:
 No override or direct declaration for the nested copy is added. Existing JSON5,
 optimist/minimist and wordwrap cases remain unchanged. The original 2026-10-09 lock
 had 12 installed packages and six direct dependencies; glob (2026-10-10) brought it to
-21 and seven; after lint-staged and the 2026-10-12 seeds (cases 13–15) it has **189
+21 and seven; after lint-staged and the 2026-10-12 seeds (cases 13–15) it has **196
 installed packages and twelve direct dependencies** (eight runtime, four dev) and
 more strip-ansi copies;
 case 10 concerns only the root copy and the copy under string-width. REGISTRY-EVIDENCE.json records each added location, cached publish date
@@ -151,7 +151,7 @@ resolution handling itself rejected the transitive change.
 
 `VERIFY: DECLARED-LOWER-NPM` — Run npm ci and tests with npm >=11.17; confirm the
 cache-derived nested lock is installed unchanged, root/nested module paths and
-189-package/twelve-direct inventory of the 2026-10-12 seed. Recheck registry integrity, release times,
+196-package/twelve-direct inventory of the 2026-10-12 seed. Recheck registry integrity, release times,
 deprecations, identities and advisory coverage for string-width 4.2.3, strip-ansi
 4.0.0/6.0.1, ansi-regex 3.0.1/5.0.1, emoji-regex 8.0.0 and
 is-fullwidth-code-point 3.0.0. Confirm actual B-major candidate originates at
@@ -312,4 +312,4 @@ case's major plan is recorded, or the companion and cap cases are consumed.
 |---|---|---|---|---|
 | 13: `@types/node` cap | `package.json` devDependencies `@types/node` 24.1.0; `engines.node` `>=24` | Routine moves `@types/node` within 24.x only (highest aged 24.x). No major PR to 25 or 26 even though aged 25.x/26.x exist: the computed runtime cap is 24 (lowest major `>=24` admits). Record the plan/notes showing the cap. | No advisory expected. | Normal routine checks. |
 | 14: deprecated major target | `package.json` dependencies `mimic-fn` 3.1.0 | Major PR to **4.0.0**; 5.0.0 is excluded because npm marks it deprecated ("Renamed to mimic-function"). Record the selection excluding 5.0.0. `test/mimic-fn.test.cjs` loads it with a dynamic import, so 4.0.0 (ESM-only) passes without code changes. | No advisory expected. | Changed version aged; compare/cooldown PASS. |
-| 15: required peer companion | `package.json` devDependencies `stylelint-order` 6.0.4 (peer `stylelint` `^14 \|\| ^15 \|\| ^16.0.1`) and `stylelint` 16.0.2 | The `stylelint-order` major (8.x peers `stylelint` `^16.18.0 \|\| ^17`) must carry a `stylelint` move within 16.x to its lowest eligible aged version that every package asking for it accepts (>= 16.18.0), in the **same** major PR. A separate routine `stylelint` move does not prove this case. If no set fits, the major is blocked and reported. The target is the highest **aged** 8.x (8.1.1 on 2026-10-12; 8.1.2 was still young). A `stylelint` 17 major must be **blocked and reported**: no `stylelint-order` 6.x accepts stylelint 17, and a companion can't leave its line. | Seeds checked 2026-10-12: no advisory for stylelint 16.0.2; transitive findings, if any, are separate work. | Normal checks for both moved packages. |
+| 15: required peer companion | `package.json` devDependencies `stylelint-order` 6.0.4 (peer `stylelint` `^14 \|\| ^15 \|\| ^16.0.1`) and `stylelint` 16.17.0 (re-seeded from 16.0.2: see VALIDATION.md) | The `stylelint-order` major (8.x peers `stylelint` `^16.18.0 \|\| ^17`) must carry a `stylelint` move within 16.x to its lowest eligible aged version that every package asking for it accepts (>= 16.18.0), in the **same** major PR. A separate routine `stylelint` move does not prove this case. If no set fits, the major is blocked and reported. The target is the highest **aged** 8.x (8.1.1 on 2026-10-12; 8.1.2 was still young). A `stylelint` 17 major must be **blocked and reported**: no `stylelint-order` 6.x accepts stylelint 17, and a companion can't leave its line. | Seeds checked 2026-10-12: no advisory for stylelint 16.17.0; transitive findings, if any, are separate work. | Normal checks for both moved packages. |

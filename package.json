@@ -20,7 +20,7 @@
     "wordwrap": "0.0.3"
   },
   "devDependencies": {
-    "@types/node": "24.19.1",
+    "@types/node": "24.19.2",
     "lint-staged": "15.2.4",
     "stylelint": "16.26.1",
     "stylelint-order": "6.0.4"

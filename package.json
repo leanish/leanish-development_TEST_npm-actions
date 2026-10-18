@@ -23,6 +23,6 @@
     "@types/node": "24.1.0",
     "lint-staged": "15.2.4",
     "stylelint": "16.18.0",
-    "stylelint-order": "8.1.1"
+    "stylelint-order": "8.1.2"
   }
 }

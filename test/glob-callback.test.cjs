@@ -1,13 +1,12 @@
 const assert = require('node:assert/strict');
 const path = require('node:path');
 const test = require('node:test');
-const glob = require('glob');
+const { glob } = require('glob');
 
-// Case 16: glob 4's module is a callable function taking a callback. glob 9 replaced it with named
-// promise/sync exports, so bump-it's glob major has to adapt this test, keeping the matched files asserted.
-test('matches the manifest files through the callback API', async () => {
-  const files = await new Promise((resolve, reject) => {
-    glob('package*.json', { cwd: path.join(__dirname, '..') }, (error, matches) => (error ? reject(error) : resolve(matches)));
-  });
+// Case 16: glob 4's module was a callable function taking a callback. glob 9 replaced it with a promise API
+// and named exports (glob 10 dropped the default export), so this test awaits the named glob and keeps
+// asserting the matched files.
+test('matches the manifest files through the promise API', async () => {
+  const files = await glob('package*.json', { cwd: path.join(__dirname, '..') });
   assert.deepEqual([...files].sort(), ['package-lock.json', 'package.json']);
 });
